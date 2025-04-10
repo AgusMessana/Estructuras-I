@@ -69,4 +69,7 @@ SList slist_intersecar(SList lista1, SList lista2);
 // Trabaja igual que la función anterior, pero con una función comparadora.
 SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora comp);
 
+// Ordena una lista de acuerdo al criterio dado por una funcion de comparacion pasada por parametro.
+SList slist_ordenar(SList lista1, FuncionComparadora comp);
+
 #endif /* __SLIST_H__ */

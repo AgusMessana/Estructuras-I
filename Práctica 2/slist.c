@@ -185,3 +185,17 @@ SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora com
   }
   return comunes;
 }
+
+SList slist_ordenar(SList lista, FuncionComparadora comp) {
+  if(lista == NULL) {
+    return NULL;
+  }
+
+  int ordenado = 0;
+  while(ordenado == 0) {
+    ordenado == 1;
+    SNodo* temp = lista;
+
+  }
+
+}
