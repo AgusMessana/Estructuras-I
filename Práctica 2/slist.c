@@ -87,3 +87,60 @@ void slist_insertar(SList* lista, int dato, int pos) {
   nuevoNodo -> sig = temp -> sig;
   temp -> sig = nuevoNodo;
 }
+
+void slist_eliminar(SList* lista, int pos){
+  if(*lista == NULL){
+    return;
+  }
+
+  if(pos == 0){
+    SNodo* nodoAeliminar = *lista;
+    *lista = (*lista)->sig;
+    free(nodoAeliminar);
+    return;
+  }
+
+  int cont;
+  SList* temp = lista;
+  for(cont = 0; cont != pos-1 && (*temp)->sig; cont++, temp = &(*temp) -> sig);
+
+  if(*temp == NULL || (*temp) -> sig == NULL){
+    return;
+  }
+
+  SNodo* nodoAeliminar = (*temp) -> sig;
+  (*temp)->sig = nodoAeliminar->sig;
+  free(nodoAeliminar);
+  return;
+}
+
+int slist_contiene(SList lista, int dato){
+  if(lista == NULL){
+    return 0;
+  }
+
+  SNodo* temp = lista;
+  for(;temp->dato != dato && temp->sig != NULL; temp = temp->sig);
+  if(temp->sig == NULL && temp -> dato != dato){
+    return 0;
+  }
+  return 1;
+}
+
+int slist_indice(SList lista, int dato){
+  if(lista == NULL){
+    return -1;
+  }
+
+  int indice = 0;
+  SNodo* temp = lista;
+  while(temp != NULL){
+    if(temp->dato == dato){
+      return indice;
+    }
+    indice ++;
+    temp = temp->sig;
+  }
+  return -1;
+}
+
