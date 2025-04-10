@@ -5,6 +5,8 @@
 
 typedef void (*FuncionVisitante) (int dato);
 
+typedef int (*FuncionComparadora) (int dato1, int dato2);
+
 typedef struct _SNodo {
   int dato;
   struct _SNodo *sig;
@@ -63,5 +65,8 @@ int slist_indice(SList lista, int dato);
 
 // Devuelve una nueva lista con los elementos comunes de dos listas dadas por parametro.
 SList slist_intersecar(SList lista1, SList lista2);
+
+// Trabaja igual que la función anterior, pero con una función comparadora.
+SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora comp);
 
 #endif /* __SLIST_H__ */

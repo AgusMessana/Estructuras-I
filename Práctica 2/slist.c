@@ -48,14 +48,14 @@ void slist_recorrer(SList lista, FuncionVisitante visit) {
 int slist_longitud (SList lista) {
   int cont = 0;
 
-  for(SNodo* temp = lista; temp != NULL; temp = temp -> sig){
+  for(SNodo* temp = lista; temp != NULL; temp = temp -> sig) {
     cont++;
   }
   return cont;
 }
 
 void slist_concatenar(SList* lista1, SList lista2) {
-  if(*lista1 == NULL){
+  if(*lista1 == NULL) {
     *lista1 = lista2;
     return;
   }
@@ -68,18 +68,18 @@ void slist_concatenar(SList* lista1, SList lista2) {
 void slist_insertar(SList* lista, int dato, int pos) {
   SNodo* nuevoNodo = malloc(sizeof(SNodo));
   nuevoNodo -> dato = dato;
-  if(*lista == NULL || pos == 0){
+  if(*lista == NULL || pos == 0) {
     nuevoNodo -> sig = *lista;
     *lista = nuevoNodo;
     return;
   }
 
   SNodo* temp = *lista; 
-  for(int cont = 0; temp != NULL && cont < pos - 1; cont++){
+  for(int cont = 0; temp != NULL && cont < pos - 1; cont++) {
     temp = temp -> sig;
   }
 
-  if(temp == NULL){
+  if(temp == NULL) {
     free(nuevoNodo);
     return;
   }
@@ -88,12 +88,12 @@ void slist_insertar(SList* lista, int dato, int pos) {
   temp -> sig = nuevoNodo;
 }
 
-void slist_eliminar(SList* lista, int pos){
-  if(*lista == NULL){
+void slist_eliminar(SList* lista, int pos) {
+  if(*lista == NULL) {
     return;
   }
 
-  if(pos == 0){
+  if(pos == 0) {
     SNodo* nodoAeliminar = *lista;
     *lista = (*lista)->sig;
     free(nodoAeliminar);
@@ -104,7 +104,7 @@ void slist_eliminar(SList* lista, int pos){
   SList* temp = lista;
   for(cont = 0; cont != pos-1 && (*temp)->sig; cont++, temp = &(*temp) -> sig);
 
-  if(*temp == NULL || (*temp) -> sig == NULL){
+  if(*temp == NULL || (*temp) -> sig == NULL) {
     return;
   }
 
@@ -114,28 +114,28 @@ void slist_eliminar(SList* lista, int pos){
   return;
 }
 
-int slist_contiene(SList lista, int dato){
-  if(lista == NULL){
+int slist_contiene(SList lista, int dato) {
+  if(lista == NULL) {
     return 0;
   }
 
   SNodo* temp = lista;
   for(;temp->dato != dato && temp->sig != NULL; temp = temp->sig);
-  if(temp->sig == NULL && temp -> dato != dato){
+  if(temp->sig == NULL && temp -> dato != dato) {
     return 0;
   }
   return 1;
 }
 
-int slist_indice(SList lista, int dato){
-  if(lista == NULL){
+int slist_indice(SList lista, int dato) {
+  if(lista == NULL) {
     return -1;
   }
 
   int indice = 0;
   SNodo* temp = lista;
-  while(temp != NULL){
-    if(temp->dato == dato){
+  while(temp != NULL) {
+    if(temp->dato == dato) {
       return indice;
     }
     indice ++;
@@ -144,3 +144,44 @@ int slist_indice(SList lista, int dato){
   return -1;
 }
 
+SList slist_intersecar(SList lista1, SList lista2) {
+  if(lista1 == NULL || lista2 == NULL){
+    return NULL;
+  }
+
+  SList comunes = slist_crear();
+  SNodo* temp1, *temp2;
+  for(temp1 = lista1; temp1 != NULL; temp1 = temp1 -> sig) {
+    int encontrado = 0;
+    for(temp2 = lista2; temp2 != NULL && encontrado != 1; temp2 = temp2 -> sig) {
+      if(temp1->dato == temp2->dato) {
+        encontrado = 1;
+      }
+    }
+    if(encontrado == 1) {
+      comunes = slist_agregar_inicio(comunes, temp1->dato);
+    }
+  }
+  return comunes;
+}
+
+SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora comp) {
+  if(lista1 == NULL || lista2 == NULL) {
+    return NULL;
+  }
+
+  SList comunes = slist_crear();
+  SNodo* temp1, *temp2;
+  for(temp1 = lista1; temp1 != NULL; temp1 = temp1 -> sig) {
+    int encontrado = 0;
+    for(temp2 = lista2; temp2 != NULL && encontrado != 1; temp2 = temp2 -> sig) {
+      if(comp(temp1->dato, temp2->dato)){
+        encontrado = 1;
+      }
+    }
+    if(encontrado) {
+      comunes = slist_agregar_inicio(comunes, temp1->dato);
+    }
+  }
+  return comunes;
+}
