@@ -70,6 +70,15 @@ SList slist_intersecar(SList lista1, SList lista2);
 SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora comp);
 
 // Ordena una lista de acuerdo al criterio dado por una funcion de comparacion pasada por parametro.
-SList slist_ordenar(SList lista1, FuncionComparadora comp);
+SList slist_ordenar(SList lista, FuncionComparadora comp);
+
+// Obtiene el reverso de una lista
+SList reverso(SList lista);
+
+// Dadas dos listas, intercale sus elementos en la lista resultante.
+SList slist_intercalar(SList lista1, SList lista2);
+
+// Divide una lista a la mitad. En caso de longitud impar, la primera lista tendrá longitud n+1 y la segunda n. Retorna un puntero al primer elemento de la segunda mitad, siempre que sea no vaca.
+SList slist_partir(SList lista);
 
 #endif /* __SLIST_H__ */

@@ -30,6 +30,7 @@ SList slist_agregar_final(SList lista, int dato) {
   for (;nodo -> sig != NULL;nodo = nodo -> sig);
 
   nodo -> sig = nuevoNodo;
+
   return lista;
 }
 
@@ -37,6 +38,7 @@ SList slist_agregar_inicio(SList lista, int dato) {
   SNodo *nuevoNodo = malloc(sizeof(SNodo));
   nuevoNodo -> dato = dato;
   nuevoNodo -> sig = lista;
+
   return nuevoNodo;
 }
 
@@ -51,6 +53,7 @@ int slist_longitud (SList lista) {
   for(SNodo* temp = lista; temp != NULL; temp = temp -> sig) {
     cont++;
   }
+
   return cont;
 }
 
@@ -111,6 +114,7 @@ void slist_eliminar(SList* lista, int pos) {
   SNodo* nodoAeliminar = (*temp) -> sig;
   (*temp)->sig = nodoAeliminar->sig;
   free(nodoAeliminar);
+
   return;
 }
 
@@ -124,6 +128,7 @@ int slist_contiene(SList lista, int dato) {
   if(temp->sig == NULL && temp -> dato != dato) {
     return 0;
   }
+
   return 1;
 }
 
@@ -141,6 +146,7 @@ int slist_indice(SList lista, int dato) {
     indice ++;
     temp = temp->sig;
   }
+
   return -1;
 }
 
@@ -162,6 +168,7 @@ SList slist_intersecar(SList lista1, SList lista2) {
       comunes = slist_agregar_inicio(comunes, temp1->dato);
     }
   }
+
   return comunes;
 }
 
@@ -183,6 +190,7 @@ SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora com
       comunes = slist_agregar_inicio(comunes, temp1->dato);
     }
   }
+
   return comunes;
 }
 
@@ -193,9 +201,63 @@ SList slist_ordenar(SList lista, FuncionComparadora comp) {
 
   int ordenado = 0;
   while(ordenado == 0) {
-    ordenado == 1;
-    SNodo* temp = lista;
-
+    ordenado = 1;
+    SNodo* actual = lista;
+    while(actual -> sig != NULL) {
+      if(comp(actual->dato, actual->sig->dato) > 0) {
+        int temp = actual -> dato;
+        actual -> dato = actual -> sig -> dato;
+        actual -> sig -> dato = temp;
+        ordenado = 0;
+      }
+      actual = actual -> sig;
+    }
   }
 
+  return lista;
+}
+
+SList reverso(SList lista) {
+  if(lista == NULL) {
+    return NULL;
+  }
+
+  SList reverse = slist_crear();
+  SNodo* temp = lista;
+  for(; temp != NULL; temp = temp -> sig) {
+    reverse = slist_agregar_inicio(reverse, temp -> dato);
+  }
+
+  return reverse;
+}
+
+SList slist_intercalar(SList lista1, SList lista2) {
+  SList intercalada = slist_crear();
+  SNodo *temp1 = lista1, *temp2 = lista2;
+
+  while(temp1 != NULL || temp2 != NULL) {
+    if(temp1 != NULL) {
+      intercalada = slist_agregar_final(intercalada, temp1->dato);
+      temp1 = temp1->sig;
+    }
+
+    if(temp2 != NULL) {
+      intercalada = slist_agregar_final(intercalada, temp2->dato);
+      temp2 = temp2->sig;
+    }
+  }
+
+  return intercalada;
+}
+
+SList* slist_partir2(SList lista) {
+  SNodo* temp = lista;
+  int len = slist_longitud(lista);
+  
+  for (int i = 0; i < (len - 1) / 2; i++, temp = temp->sig);
+
+  SNodo* segunda_mitad = temp->sig;
+  temp->sig = NULL;
+  
+  return segunda_mitad;  
 }
