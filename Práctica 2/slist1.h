@@ -8,7 +8,7 @@ typedef struct _SNodo {
     struct _SNodo *sig; 
 } SNodo;
 
-// Ahora hay un puntero al primer elemento de la lista y uno al último
+// Ahora hay punteros al primer y último elemento de la lista
 typedef struct SList {
     SNodo *primero;
     SNodo *ultimo;

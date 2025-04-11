@@ -38,4 +38,4 @@ SList slist_agregar_inicio(SList lista, int dato) {
     return lista;
 }
 
-// La ventaja principal es que resulta más sencillo y eficiente agregar elementos al final de la lista ya que tenemos un puntero que apunta al último elemento de ella. Por el lado de las desventajas, ocupa un poco más de espacio en la memoria.
+// La ventaja principal es que resulta más sencillo y eficiente agregar elementos al final de la lista ya que tenemos un puntero al último elemento de ella. Por el lado de las desventajas, ocupa un poco más de espacio en la memoria.
