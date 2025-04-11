@@ -20,18 +20,26 @@ void dlist_destruir(DList* dlista) {
     dlista->ultimo = NULL;
 }
 
-void dlist_recorrer(DList lista, DListOrdenDeRecorrido orden, FuncionVisitante visit) {
+int dlist_vacia(DList dlista) {
+    if(dlista.primero == NULL && dlista.ultimo == NULL) {
+        return 1;
+    }
+    
+    return 0;
+}
+
+void dlist_recorrer(DList dlista, DListOrdenDeRecorrido orden, FuncionVisitante visit) {
     DNodo* temp;
 
     switch(orden) {
         case DLIST_RECORRIDO_HACIA_ADELANTE:
-            for(temp = lista.primero; temp != NULL; temp = temp->sig) {
+            for(temp = dlista.primero; temp != NULL; temp = temp->sig) {
                 visit(temp->dato);
             }
             break;
 
         case DLIST_RECORRIDO_HACIA_ATRAS:
-            for(temp = lista.ultimo; temp != NULL; temp = temp->ant) {
+            for(temp = dlista.ultimo; temp != NULL; temp = temp->ant) {
                 visit(temp->dato);
             }
             break;
@@ -81,6 +89,16 @@ DList dlist_agregar_inicio(DList dlista, int dato) {
     dlista.primero = nuevoNodo;
 
     return dlista;
+}
+
+int dlist_longitud (DList dlista) {
+    int cont = 0;
+    DNodo* temp = dlista.primero;
+    for(; temp != NULL; temp = temp->sig) {
+        cont++;
+    }
+
+    return cont;
 }
 
 void dlist_eliminar(DList* dlista, int pos) {

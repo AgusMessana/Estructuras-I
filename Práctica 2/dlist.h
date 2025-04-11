@@ -27,6 +27,9 @@ DList dlist_crear();
 // Destruye una lista
 void dlist_destruir(DList* dlista);
 
+// Determina si la lista es vacía.
+int dlist_vacia(DList dlista);
+
 // Recorrido de la lista, utilizando la funcion pasada.
 void dlist_recorrer(DList dlista, DListOrdenDeRecorrido orden, FuncionVisitante visit);
 
@@ -35,6 +38,9 @@ DList dlist_agregar_final(DList dlista, int dato);
 
 // Agrega un elemento al inicio de la lista
 DList dlist_agregar_inicio(DList dlista, int dato);
+
+// Devuelve la longitud de una lista
+int dlist_longitud (DList dlista);
 
 // Borra de una lista un dato apuntado en una posicion arbitraria
 void dlist_eliminar (DList* dlista, int pos);
