@@ -194,3 +194,56 @@ void dlist_eliminar(DList* dlista, int pos) {
     return;
 }
 
+int dlist_contiene(DList dlista, int dato) {
+    DNodo* temp = dlista.primero;
+    for(; temp != NULL; temp = temp->sig) {
+        if(temp->dato == dato) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+int dlist_indice(DList dlista, int dato) {
+    DNodo* temp = dlista.primero;
+    int pos = 0;
+    for(; temp != NULL && temp->dato != dato; temp = temp->sig, pos++);
+    if(temp == NULL) {
+        return -1;
+    }
+    return pos;
+}
+
+DList dlist_intersecar(DList dlista1, DList dlista2) {
+    DList comunes = dlist_crear();
+    if(dlista1.primero == NULL && dlista1.ultimo == NULL || dlista2.primero == NULL && dlista2.ultimo == NULL) {
+        return comunes;
+    }
+
+    DNodo* temp1, *temp2;
+    for(temp1 = dlista1.primero; temp1 != NULL; temp1 = temp1->sig ){
+        int encontrado = 0;
+        for(temp2 = dlista2.primero; temp2 != NULL && encontrado != 1; temp2 = temp2->sig) {
+            if(temp1->dato == temp2->dato) {
+                encontrado = 1;
+            }
+        }
+        if(encontrado == 1) {
+            comunes = dlist_agregar_inicio(comunes, temp1->dato);
+        }
+    }
+
+    return comunes;
+}
+
+DList reverso(DList dlista) {
+    DList reversa = dlist_crear();
+    DNodo* temp = dlista.primero;
+
+    for(; temp != NULL; temp = temp->sig) {
+        reversa = dlist_agregar_inicio(reversa, temp->dato);
+    }
+
+    return reversa;
+}

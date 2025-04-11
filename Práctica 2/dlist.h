@@ -46,9 +46,22 @@ int dlist_longitud (DList dlista);
 void dlist_concatenar(DList* dlista1, DList dlista2);
 
 // Inserta un dato en una posición arbitraria
-void dlist_insertar(DList* lista, int dato, int pos);
+void dlist_insertar(DList* dlista, int dato, int pos);
 
 // Borra de una lista un dato apuntado en una posicion arbitraria
 void dlist_eliminar (DList* dlista, int pos);
+
+// Determina si un elemento está en una lista dada
+// Devuelve 0 si el elemento no está y 1 si el elemento está
+int dlist_contiene(DList dlista, int dato);
+
+// Devuelve la posición de la primera ocurrencia de un elemento si el mismo está en la lista dada, y -1 en caso que no esté.
+int dlist_indice(DList dlista, int dato);
+
+// Devuelve una nueva lista con los elementos comunes de dos listas dadas por parametro.
+DList dlist_intersecar(DList lista1, DList lista2);
+
+// Obtiene el reverso de una lista
+DList reverso(DList lista);
 
 #endif /* __DLIST_H__ */
