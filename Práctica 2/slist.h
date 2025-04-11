@@ -78,7 +78,7 @@ SList reverso(SList lista);
 // Dadas dos listas, intercale sus elementos en la lista resultante.
 SList slist_intercalar(SList lista1, SList lista2);
 
-// Divide una lista a la mitad. En caso de longitud impar, la primera lista tendrá longitud n+1 y la segunda n. Retorna un puntero al primer elemento de la segunda mitad, siempre que sea no vaca.
+// Divide una lista a la mitad. En caso de longitud impar, la primera lista tendrá longitud n+1 y la segunda n. Retorna un puntero al primer elemento de la segunda mitad, siempre que sea no vacía.
 SList slist_partir(SList lista);
 
 #endif /* __SLIST_H__ */

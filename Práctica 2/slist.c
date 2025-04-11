@@ -60,6 +60,7 @@ int slist_longitud (SList lista) {
 void slist_concatenar(SList* lista1, SList lista2) {
   if(*lista1 == NULL) {
     *lista1 = lista2;
+    
     return;
   }
 
