@@ -1,5 +1,6 @@
 #include "dlist.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 DList dlist_crear() {
     DList dlista;
@@ -101,6 +102,62 @@ int dlist_longitud (DList dlista) {
     return cont;
 }
 
+void dlist_concatenar(DList* dlista1, DList dlista2) {
+    if(dlista2.primero == NULL && dlista2.ultimo == NULL) {
+        return;
+    }
+    if(dlista1->primero == NULL && dlista1 -> ultimo == NULL) {
+        dlista1->primero = dlista2.primero;
+        dlista1->ultimo = dlista2.ultimo;
+        return;
+    }
+
+    dlista1->ultimo->sig = dlista2.primero;
+    dlista2.primero->ant = dlista1->ultimo;
+    dlista1->ultimo = dlista2.ultimo;
+}
+
+void dlist_insertar(DList* dlista, int dato, int pos) {
+    DNodo* nuevoNodo = malloc(sizeof(DNodo));
+    nuevoNodo -> dato = dato;
+
+    if(dlista->primero == NULL && dlista->ultimo == NULL) {
+        nuevoNodo->ant = NULL;
+        nuevoNodo->sig = NULL;
+        dlista->primero = nuevoNodo;
+        dlista->ultimo = nuevoNodo;
+        return;
+    }
+    if(pos == 0) {
+        nuevoNodo->sig = dlista->primero;
+        nuevoNodo->ant = NULL;
+        dlista->primero->ant = nuevoNodo;
+        dlista->primero = nuevoNodo;
+        return;
+    }
+
+    DNodo* temp = dlista->primero;
+    int cont = 0;
+    for(; temp != NULL && cont != pos; temp = temp->sig, cont++);
+
+    if(temp == NULL && cont != pos) {
+        free(nuevoNodo);
+        return;
+    }
+    if(temp == NULL && cont == pos) {
+        nuevoNodo->sig = NULL;
+        nuevoNodo->ant = dlista->ultimo;
+        dlista->ultimo->sig = nuevoNodo;
+        dlista->ultimo = nuevoNodo;
+        return;
+    }
+
+    nuevoNodo->sig = temp;
+    nuevoNodo->ant = temp->ant;
+    temp->ant->sig = nuevoNodo;
+    temp->ant = nuevoNodo;
+}
+
 void dlist_eliminar(DList* dlista, int pos) {
     if(dlista->primero == NULL && dlista->ultimo == NULL) {
         return;
@@ -115,8 +172,6 @@ void dlist_eliminar(DList* dlista, int pos) {
             dlista -> ultimo = NULL;
         }
         free(temp);
-
-        return;
     }
 
     DNodo* temp = dlista->primero;

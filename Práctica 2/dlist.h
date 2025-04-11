@@ -42,6 +42,12 @@ DList dlist_agregar_inicio(DList dlista, int dato);
 // Devuelve la longitud de una lista
 int dlist_longitud (DList dlista);
 
+// Toma dos listas y concatena la segunda a la primera
+void dlist_concatenar(DList* dlista1, DList dlista2);
+
+// Inserta un dato en una posición arbitraria
+void dlist_insertar(DList* lista, int dato, int pos);
+
 // Borra de una lista un dato apuntado en una posicion arbitraria
 void dlist_eliminar (DList* dlista, int pos);
 
