@@ -3,9 +3,9 @@
 
 #include <stddef.h>
 
-typedef void (*FuncionVisitante) (int dato);
+typedef void (*FuncionVisitante)(int dato);
 
-typedef int (*FuncionComparadora) (int dato1, int dato2);
+typedef int (*FuncionComparadora)(int dato1, int dato2);
 
 typedef struct _SNodo {
   int dato;
@@ -45,16 +45,16 @@ SList slist_agregar_inicio(SList lista, int dato);
 void slist_recorrer(SList lista, FuncionVisitante visit);
 
 // Devuelve la longitud de una lista
-int slist_longitud (SList lista);
+int slist_longitud(SList lista);
 
 // Toma dos listas y concatena la segunda a la primera
-void slist_concatenar(SList* lista1, SList lista2);
+void slist_concatenar(SList * lista1, SList lista2);
 
 // Inserta un dato en una posición arbitraria
-void slist_insertar(SList* lista, int dato, int pos);
+void slist_insertar(SList * lista, int dato, int pos);
 
 // Borra de la lista un dato apuntado en una posición arbitraria
-void slist_eliminar(SList* lista, int pos);
+void slist_eliminar(SList * lista, int pos);
 
 // Determina si un elemento está en una lista dada
 // Devuelve 0 si el elemento no está y 1 si el elemento está
@@ -67,7 +67,8 @@ int slist_indice(SList lista, int dato);
 SList slist_intersecar(SList lista1, SList lista2);
 
 // Trabaja igual que la función anterior, pero con una función comparadora.
-SList slist_intersecar_custom(SList lista1, SList lista2, FuncionComparadora comp);
+SList slist_intersecar_custom(SList lista1, SList lista2,
+                              FuncionComparadora comp);
 
 // Ordena una lista de acuerdo al criterio dado por una funcion de comparacion pasada por parametro.
 SList slist_ordenar(SList lista, FuncionComparadora comp);
@@ -81,4 +82,4 @@ SList slist_intercalar(SList lista1, SList lista2);
 // Divide una lista a la mitad. En caso de longitud impar, la primera lista tendrá longitud n+1 y la segunda n. Retorna un puntero al primer elemento de la segunda mitad, siempre que sea no vacía.
 SList slist_partir(SList lista);
 
-#endif /* __SLIST_H__ */
+#endif                          /* __SLIST_H__ */
