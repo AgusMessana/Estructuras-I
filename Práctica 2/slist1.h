@@ -26,4 +26,4 @@ SList slist_agregar_final(SList lista, int dato);
 // Agrega un elemento al inicio de la lista
 SList slist_agregar_inicio(SList lista, int dato);
 
-#endif                          /* __SLIST1_H__ */
+#endif /* __SLIST1_H__ */
