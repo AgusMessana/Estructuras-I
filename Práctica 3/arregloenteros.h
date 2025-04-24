@@ -1,5 +1,5 @@
-#ifndef __ARREGLOS_H__
-#define __ARREGLOS_H__
+#ifndef __ARREGLOENTEROS_H__
+#define __ARREGLOENTEROS_H__
 
 #include <stddef.h>
 
