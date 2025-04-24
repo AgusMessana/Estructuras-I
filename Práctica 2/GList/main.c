@@ -3,6 +3,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int es_mayor_de(void *dato) {
+  return contacto_es_mayor_de(dato, 60);
+}
+
+void *f_copia_contacto(void *dato) {
+  return contacto_copia((Contacto *) dato);
+}
+
+void f_imprimir_contacto(void *dato) {
+  contacto_imprimir((Contacto *) dato);
+}
+
+void f_dest_contacto(void *dato) {
+  contacto_destruir((Contacto *) dato);
+}
+
 int main() {
 
   GList lista = glist_crear();
@@ -15,16 +31,20 @@ int main() {
   contactos[5] = contacto_crear("Dardo Fuseneco", "3416894526", 64);
 
   for (int i = 0; i < 6; ++i) {
-    lista =
-        glist_agregar_inicio(lista, contactos[i],
-                             (FuncionCopia) contacto_copia);
+    lista = glist_agregar_inicio(lista, contactos[i], f_copia_contacto);
     contacto_destruir(contactos[i]);
   }
 
   printf("Lista:\n");
-  glist_recorrer(lista, (FuncionVisitante) contacto_imprimir);
+  glist_recorrer(lista, f_imprimir_contacto);
 
-  glist_destruir(lista, (FuncionDestructora) contacto_destruir);
+  GList mayores = glist_filtrar(lista, es_mayor_de, f_copia_contacto);
+
+  printf("Lista filtrada:\n");
+  glist_recorrer(mayores, f_imprimir_contacto);
+
+  glist_destruir(lista, f_dest_contacto);
+  glist_destruir(mayores, f_dest_contacto);
 
   return 0;
 }

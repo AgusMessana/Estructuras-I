@@ -34,8 +34,14 @@ Contacto *contacto_copia(Contacto * contacto) {
  * iguales, < 0 si el primero es menor que el segundo y > 0 si el primero es
  * mayor que el segundo.
  */
-int contacto_comparar(Contacto * c1, Contacto * c2) {
-  return (strcmp(c1->nombre, c2->nombre));
+int contacto_comparar (Contacto* c1, Contacto* c2){
+  if (strcmp(c1->nombre, c2->nombre))
+      return 1;
+  if (strcmp(c1->tel, c2->tel))
+      return 1;
+  if (c1->edad == c2->edad)
+      return 0;
+  return 1;
 }
 
 /**
@@ -52,4 +58,8 @@ void contacto_destruir(Contacto * contacto) {
  */
 void contacto_imprimir(Contacto * contacto) {
   printf("%s, %s, %d.\n", contacto->nombre, contacto->tel, contacto->edad);
+}
+
+int contacto_es_mayor_de(Contacto * c, unsigned int edad) {
+  return (c->edad > edad);
 }

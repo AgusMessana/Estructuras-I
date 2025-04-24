@@ -37,4 +37,7 @@ void contacto_destruir(Contacto * contacto);
  */
 void contacto_imprimir(Contacto * contacto);
 
+// Devuelve 1 si el contacto es mayor a la edad pasada como parámetro y 0 si no lo es
+int contacto_es_mayor_de(Contacto* c, unsigned int edad);
+
 #endif /* __CONTACTO_H__ */
