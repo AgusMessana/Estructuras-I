@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <gplias.h>
+#include <gpilas.h>
 
 Pila gpila_crear() {
   return NULL;
@@ -28,4 +28,19 @@ Pila gpila_desapilar(Pila pila, FuncionDestructora destroy) {
 
 void gpila_imprimir(Pila pila, FuncionVisitante visit) {
   glist_recorrer(pila, visit);
+}
+
+GList invertir_orden(GList lista, FuncionCopia copy, FuncionDestructora destroy) {
+  Pila nuevaPila = gpila_crear();
+  for (GNode * temp = lista; temp != NULL; temp = temp->next) {
+    nuevaPila = gpila_apilar(nuevaPila, temp->data, copy);
+  }
+  GList listaInvertida = glist_crear();
+  while (!gpila_es_vacia(nuevaPila)) {
+    listaInvertida =
+        glist_agregar_inicio(listaInvertida, gpila_tope(nuevaPila), copy);
+    nuevaPila = gpila_desapilar(nuevaPila, destroy);
+  }
+  gpila_destruir(nuevaPila, destroy);
+  return listaInvertida;
 }
