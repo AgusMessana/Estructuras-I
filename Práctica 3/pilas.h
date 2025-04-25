@@ -2,6 +2,8 @@
 #define __PILAS_H__
 #include "arregloenteros.h"
 
+#include <stddef.h>
+
 struct _Pila {
   ArregloEnteros *arr;
   int ultimo;                   //última posición ocupada por el arreglo
@@ -9,7 +11,6 @@ struct _Pila {
 
 typedef struct _Pila *Pila;
 
-#include <stddef.h>
 // Crea e inicializa una nueva pila vaca con la capacidad dada
 Pila pila_crear(int capacidad);
 
