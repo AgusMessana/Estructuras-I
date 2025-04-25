@@ -40,6 +40,9 @@ int glist_vacia(GList lista);
  */
 GList glist_agregar_inicio(GList lista, void *dato, FuncionCopia copiar);
 
+// Agrega un elemento al final de la lista
+GList glist_agregar_final(GList lista, void* dato, FuncionCopia copy);
+
 /**
  * Recorrido de la lista, utilizando la funcion pasada.
  */
@@ -72,7 +75,7 @@ int sglist_buscar(GList lista, void *dato, FuncionComparadora comp);
 SGList sglist_arr(void **arreglo, int longi, FuncionCopia copy,
                   FuncionComparadora comp);
 
-//! Funciones auxiliares para ejercicio P3.2
+//! Funciones auxiliares para práctica 3
 // Devuelve el primer elemento de la lista
 void* glist_primero(GList lista);
 

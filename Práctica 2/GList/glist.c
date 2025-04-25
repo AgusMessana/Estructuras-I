@@ -42,6 +42,26 @@ GList glist_agregar_inicio(GList list, void *data, FuncionCopia copy) {
   return newNode;
 }
 
+GList glist_agregar_final(GList lista, void *dato, FuncionCopia copy) {
+  GNode *nuevoNodo = malloc(sizeof(GNode));
+  assert(nuevoNodo != NULL);
+  nuevoNodo->data = copy(dato);
+  nuevoNodo->next = NULL;
+
+  if (lista == NULL) {
+    return nuevoNodo;
+  }
+
+  GNode *actual = lista;
+  while (actual->next != NULL) {
+    actual = actual->next;
+  }
+
+  actual->next = nuevoNodo;
+
+  return lista;
+}
+
 /**
  * Recorrido de la lista, utilizando la funcion pasada.
  */
