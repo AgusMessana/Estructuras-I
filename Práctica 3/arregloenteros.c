@@ -10,7 +10,6 @@ ArregloEnteros *arreglo_enteros_crear(int capacidad) {
   }
 
   arreglo->datos = (int *) malloc(sizeof(int) * capacidad);
-
   arreglo->capacidad = capacidad;
 
   return arreglo;
