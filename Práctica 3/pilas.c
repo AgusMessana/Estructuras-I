@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "arregloenteros.h"
 #include "pilas.h"
 
 Pila pila_crear(int longitud) {
