@@ -70,4 +70,11 @@ int sglist_buscar(GList lista, void *dato, FuncionComparadora comp);
 SGList sglist_arr(void **arreglo, int longi, FuncionCopia copy,
                   FuncionComparadora comp);
 
+//! Funciones auxiliares para ejercicio P3.2
+// Devuelve el primer elemento de la lista
+void* glist_primero(GList lista);
+
+// Elimina el primer elemento de la lista
+GList glist_eliminar_primero(GList lista, FuncionDestructora destroy);
+
 #endif                          /* __GLIST_H__ */

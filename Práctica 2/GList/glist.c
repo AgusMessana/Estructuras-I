@@ -116,3 +116,19 @@ SGList sglist_arr(void **arreglo, int longi, FuncionCopia copy,
   }
   return listaArr;
 }
+
+void *glist_primero(GList lista) {
+  assert(lista != NULL);
+  return lista->data;
+}
+
+GList glist_eliminar_primero(GList lista, FuncionDestructora destroy) {
+  if (lista == NULL) {
+    return NULL;
+  }
+
+  GList siguiente = lista->next;
+  destroy(lista->data);
+  free(lista);
+  return siguiente;
+}
