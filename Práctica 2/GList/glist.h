@@ -1,6 +1,8 @@
 #ifndef __GLIST_H__
 #define __GLIST_H__
 
+#include <stddef.h>
+
 typedef void (*FuncionDestructora)(void *dato);
 typedef void *(*FuncionCopia)(void *dato);
 typedef void (*FuncionVisitante)(void *dato);

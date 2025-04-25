@@ -1,6 +1,8 @@
 #ifndef __CONTACTO_H__
 #define __CONTACTO_H__
 
+#include <stddef.h>
+
 /**
  * Estructura que representa un contacto.
  */
