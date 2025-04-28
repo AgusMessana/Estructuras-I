@@ -1,6 +1,6 @@
 #ifndef __GPILAS_H__
 #define __GPILAS_H__
-#include <Estructuras-I/Práctica 2/GList/glist.h>
+#include "Estructuras-I/Práctica 2/GList/glist.h"
 
 #include <stddef.h>
 
@@ -22,7 +22,7 @@ void *gpila_tope(Pila pila);
 Pila gpila_apilar(Pila pila, void *elemento, FuncionCopia copy);
 
 // Elimina el elemento que se encuentra en el tope de la pila
-Pila gpila_desapilar(Pila pila);
+Pila gpila_desapilar(Pila pila, FuncionDestructora destroy);
 
 // Imprime en orden los elementos de la pila
 void gpila_imprimir(Pila pila, FuncionVisitante visit);

@@ -2,7 +2,7 @@
 #define __COLAS_H__
 
 #include <stddef.h>
-#include <Estructuras-I/Práctica 2/GList/glist.h>
+#include "Estructuras-I/Práctica 2/GList/glist.h"
 
 typedef struct _Cola {
   GNode *primero;

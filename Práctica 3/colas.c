@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <colas.h>
+#include "colas.h"
 
 Cola *cola_crear() {
   Cola *nuevaCola = malloc(sizeof(Cola));
