@@ -1,5 +1,6 @@
 #ifndef __2DO_PARCIAL_2023_H__
 #define __2DO_PARCIAL_2023_H__
+#include <stddef.h>
 
 typedef struct _GNodo {
   void *dato;

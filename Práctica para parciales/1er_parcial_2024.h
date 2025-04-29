@@ -1,5 +1,6 @@
 #ifndef __1ER_PARCIAL_2024_H__
 #define __1ER_PARCIAL_2024_H__
+#include <stddef.h>
 
 typedef void (*FuncionDestructora)(void *dato);
 typedef void *(*FuncionCopia)(void *dato);
