@@ -2,11 +2,11 @@
 #include <assert.h>
 #include <stdlib.h>
 
-struct _BTNodo {
+typedef struct _BTNodo {
   int dato;
   struct _BTNodo *left;
   struct _BTNodo *right;
-};
+} BTNodo;
 
 /**
  * Devuelve un arbol vacío.
@@ -63,8 +63,8 @@ void preorder(BTree arbol, FuncionVisitante visit) {
     return;
   }
   visit(arbol->dato);
-  inorder(arbol->left, visit);
-  inorder(arbol->right, visit);
+  preorder(arbol->left, visit);
+  preorder(arbol->right, visit);
 }
 
 void postorder(BTree arbol, FuncionVisitante visit) {
@@ -93,6 +93,44 @@ void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
   }
 }
 
+/**
+ * Recorrido del arbol preorder iterativo, utilizando la funcion pasada.
+ */
+void *no_copia(void *dato) {
+  return dato;
+}
+
+void no_destruir(void *dato) {
+  return;
+}
+
+/* void btree_recorrer_pre_it(BTree arbol, FuncionVisitante visit) {
+  if (btree_empty(arbol))
+    return;
+
+  Pila pila_de_nodos = pila_crear();
+
+  pila_de_nodos = pila_apilar(pila_de_nodos, arbol, no_copia);
+
+  while (!pila_vacia(pila_de_nodos)) {
+
+    BTree nodo_actual = pila_tope(pila_de_nodos, no_copia);
+    visit(nodo_actual->dato);
+
+    pila_de_nodos = pila_desapilar(pila_de_nodos, no_destruir);
+
+    if (!btree_empty(nodo_actual->right))
+      pila_de_nodos = pila_apilar(pila_de_nodos, nodo_actual->right, no_copia);
+
+    if (!btree_empty(nodo_actual->left))
+      pila_de_nodos = pila_apilar(pila_de_nodos, nodo_actual->left, no_copia);
+  }
+
+  pila_destruir(pila_de_nodos, no_destruir);
+
+} */
+
+// Retorna el número de nodos del árbol.
 int btree_nnodos(BTree arbol) {
   if (btree_empty(arbol)) {
     return 0;
@@ -101,6 +139,7 @@ int btree_nnodos(BTree arbol) {
   return 1 + btree_nnodos(arbol->left) + btree_nnodos(arbol->right);
 }
 
+// Retorna 1 si el número dado se encuentra en el árbol, y 0 en caso contrario.
 int btree_buscar(BTree arbol, int numero) {
   if (btree_empty(arbol)) {
     return 0;
@@ -113,6 +152,7 @@ int btree_buscar(BTree arbol, int numero) {
       || btree_buscar(arbol->right, numero);
 }
 
+// Retorna un nuevo árbol que sea una copia del árbol dado.
 BTree btree_copiar(BTree arbol) {
   if (btree_empty(arbol)) {
     return NULL;
@@ -124,6 +164,7 @@ BTree btree_copiar(BTree arbol) {
   return btree_unir(arbol->dato, copia_izq, copia_der);
 }
 
+// Retorna la altura del árbol.
 int btree_altura(BTree arbol) {
   if (btree_empty(arbol)) {
     return -1;
@@ -134,6 +175,7 @@ int btree_altura(BTree arbol) {
   return 1 + (altura_izq > altura_der ? altura_izq : altura_der);
 }
 
+// Retorna el número de nodos que se encuentran a la profundidad dada.
 int btree_nnodos_profundidad(BTree arbol, int profundidad) {
   if (btree_empty(arbol)) {
     return 0;
@@ -147,6 +189,7 @@ int btree_nnodos_profundidad(BTree arbol, int profundidad) {
   return nodos_izq + nodos_der;
 }
 
+// Retrona la profundidad del nodo que contiene el número dado, y -1 si el número no se encuentra en el árbol.
 int btree_profundidad(BTree arbol, int numero) {
   if (btree_empty(arbol)) {
     return -1;
@@ -172,10 +215,105 @@ int btree_profundidad(BTree arbol, int numero) {
   return (prof_izq < prof_der ? prof_izq : prof_der);
 }
 
+// Retorna la suma totoal de los datos del árbol.
 int btree_suma(BTree arbol) {
   if (btree_empty(arbol)) {
     return 0;
   }
-  
+
   return arbol->dato + btree_suma(arbol->left) + btree_suma(arbol->right);
 }
+
+// Recorrido del arbol, utilizando la funcion pasada.
+void inorder_extra(BTree arbol, FuncionVisitanteExtra visit_extra, void *extra) {
+  if (btree_empty(arbol)) {
+    return;
+  }
+  inorder_extra(arbol->left, visit_extra, extra);
+  visit_extra(arbol->dato, extra);
+  inorder_extra(arbol->right, visit_extra, extra);
+}
+
+void preorder_extra(BTree arbol, FuncionVisitanteExtra visit_extra, void *extra) {
+  if (btree_empty(arbol)) {
+    return;
+  }
+  visit_extra(arbol->dato, extra);
+  preorder_extra(arbol->left, visit_extra, extra);
+  preorder_extra(arbol->right, visit_extra, extra);
+}
+
+void postorder_extra(BTree arbol, FuncionVisitanteExtra visit_extra,
+                     void *extra) {
+  if (btree_empty(arbol)) {
+    return;
+  }
+  postorder_extra(arbol->left, visit_extra, extra);
+  postorder_extra(arbol->right, visit_extra, extra);
+  visit_extra(arbol->dato, extra);
+}
+
+void btree_recorrer_extra(BTree arbol, BTreeOrdenDeRecorrido orden,
+                          FuncionVisitanteExtra visit_extra, void *extra) {
+  switch (orden) {
+  case BTREE_RECORRIDO_IN:
+    inorder_extra(arbol, visit_extra, extra);
+    break;
+  case BTREE_RECORRIDO_PRE:
+    preorder_extra(arbol, visit_extra, extra);
+    break;
+  case BTREE_RECORRIDO_POST:
+    postorder_extra(arbol, visit_extra, extra);
+    break;
+  default:
+    assert(0);
+  }
+}
+
+//Retorna el número de nodos del árbol con un dato extra.
+void contar_nodo(int dato, void *extra) {
+  int *contador = (int *)extra;
+  (*contador)++;
+}
+
+int btree_nnodos_extra(BTree arbol) {
+  int contador = 0;
+  btree_recorrer_extra(arbol, BTREE_RECORRIDO_POST, contar_nodo, &contador);
+  return contador;
+}
+
+// Retorna la suma totoal de los datos del árbol con un dato extra.
+void sumar_dato(int dato, void *extra) {
+  int *acumulador = (int *)extra;
+  *acumulador += dato;
+}
+
+int btree_suma_extra(BTree arbol) {
+  int suma = 0;
+  btree_recorrer_extra(arbol, BTREE_RECORRIDO_POST, sumar_dato, &suma);
+  
+  return suma;
+}
+
+// void btree_recorrer_bfs(BTree arbol, FuncionVisitante visit){
+//   if(btree_empty(arbol)){
+//     return;
+//   }
+  
+//   Cola* cola = cola_crear();
+//   cola_encolar(cola, arbol, no_copia);
+
+//   while(!cola_es_vacia(cola)){
+//     BTree nodo_actual = (BTree)cola_desencolar(cola, no_destruir);
+//     visit(nodo_actual->dato);
+
+//     if(!btree_empty(nodo_actual->left)){
+//       cola_encolar(cola, nodo_actual->left, no_copia);
+//     }
+//     if(!btree_empty(nodo_actual->right)){
+//       cola_encolar(cola, nodo_actual->right, no_copia);
+//     }
+//   }
+
+//   cola_destruir(cola, no_destruir);
+// }

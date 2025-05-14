@@ -43,6 +43,7 @@ int main() {
 
   printf("La suma de los valores de los nodos es %d\n", suma_nodos);
 
+
   btree_destruir(raiz);
   btree_destruir(copia);
 
