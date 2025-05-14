@@ -1,6 +1,6 @@
 #ifndef __GPILAS_H__
 #define __GPILAS_H__
-#include "Estructuras-I/Práctica 2/GList/glist.h"
+#include "/mnt/i/Estructuras-I/Práctica 2/GList/glist.h"
 
 #include <stddef.h>
 
