@@ -13,12 +13,6 @@ struct _BST_Nodo {
   struct _BST_Nodo *izq, *der;
 };
 
-typedef struct _BTNodo {
-  int dato;
-  struct _BTNodo *left;
-  struct _BTNodo *right;
-} BTNodo;
-
 /**
  * bstee_crear: Retorna un arbol de busqueda binaria vacio
  */
@@ -175,6 +169,14 @@ void *bstree_k_esimo_menor(BSTree arbol, int k) {
 /**
  * Determina si el árbol dado cumple la propiedad de los ABB. Devuelve 1 si lo hace, 0 si no.
  */
-int btree_validar(BTree) {
-  
+int btree_validar(BSTree arbol, void *min, void *max, FuncionComparadora comp) {
+  if (arbol == NULL) {
+    return 1;
+  }
+  if ((min != NULL && comp(arbol->dato, min) <= 0)
+      || (max != NULL && comp(arbol->dato, max) >= 0)) {
+    return 0;
+  }
+  return btree_validar(arbol->izq, min, arbol->dato, comp)
+      && btree_validar(arbol->der, arbol->dato, max, comp);
 }

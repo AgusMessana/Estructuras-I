@@ -13,7 +13,6 @@ typedef enum {
 } BSTreeRecorrido;
 
 typedef struct _BST_Nodo *BSTree;
-typedef struct _BTNodo *BTree;
 
 /**
  * Retorna un arbol de busqueda binaria vacio.
@@ -57,5 +56,5 @@ void *bstree_k_esimo_menor(BSTree, int);
 /**
  * Determina si el árbol dado cumple la propiedad de los ABB. Devuelve 1 si lo hace, 0 si no.
  */
-int btree_validar(BTree);
+int btree_validar(BSTree, void*, void*, FuncionComparadora);
 #endif                          //__BSTREE_H__
