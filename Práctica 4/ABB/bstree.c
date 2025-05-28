@@ -16,7 +16,9 @@ struct _BST_Nodo {
 /**
  * bstee_crear: Retorna un arbol de busqueda binaria vacio
  */
-BSTree bstee_crear() { return NULL; }
+BSTree bstee_crear() {
+  return NULL;
+}
 
 /**
  * bstree_destruir: Destruye el arbol y sus datos
@@ -39,9 +41,9 @@ int bstree_buscar(BSTree raiz, void *dato, FuncionComparadora comp) {
     return 0;
   else if (comp(dato, raiz->dato) == 0) // raiz->dato == dato
     return 1;
-  else if (comp(dato, raiz->dato) < 0) // dato < raiz->dato
+  else if (comp(dato, raiz->dato) < 0)  // dato < raiz->dato. Significa que el dato es más chico que el de la raíz, por lo que hay que buscar a la izquierda.
     return bstree_buscar(raiz->izq, dato, comp);
-  else // raiz->dato < dato
+  else                          // raiz->dato < dato. Significa que el dato es más grande que el de la raíz, por lo que hay que buscar a la izquierda.
     return bstree_buscar(raiz->der, dato, comp);
 }
 
@@ -51,15 +53,15 @@ int bstree_buscar(BSTree raiz, void *dato, FuncionComparadora comp) {
  */
 BSTree bstree_insertar(BSTree raiz, void *dato, FuncionCopiadora copia,
                        FuncionComparadora comp) {
-  if (raiz == NULL) { // insertar el dato en un nuevo nodo
-    struct _BST_Nodo *nuevoNodo = malloc(sizeof(struct _BST_Nodo));
+  if (raiz == NULL) {           // insertar el dato en un nuevo nodo
+    struct _BST_Nodo *nuevoNodo = malloc(sizeof(struct _BST_Nodo));     // también puedo hacer BSTree *nuevoNodo...
     assert(nuevoNodo != NULL);
     nuevoNodo->dato = copia(dato);
     nuevoNodo->izq = nuevoNodo->der = NULL;
     return nuevoNodo;
-  } else if (comp(dato, raiz->dato) < 0) // dato < raiz->dato
+  } else if (comp(dato, raiz->dato) < 0)        // dato < raiz->dato. Significa que el dato es más chico que el de la raíz, por lo que hay que buscar a la izquierda.
     raiz->izq = bstree_insertar(raiz->izq, dato, copia, comp);
-  else if (comp(dato, raiz->dato) > 0) // raiz->dato < dato
+  else if (comp(dato, raiz->dato) > 0)  // raiz->dato < dato. Significa que el dato es más grande que el de la raíz, por lo que hay que buscar a la izquierda.
     raiz->der = bstree_insertar(raiz->der, dato, copia, comp);
   // si el dato ya se encontraba, no es insertado
   return raiz;
