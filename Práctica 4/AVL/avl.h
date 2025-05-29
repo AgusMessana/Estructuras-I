@@ -36,6 +36,12 @@ int avl_buscar(AVL, void *);
 void avl_insertar(AVL, void *);
 
 /**
+ * Elimina un dato del árbol, manteniendo la propiedad de los arboles AVL. No hace
+ * nada si el dato no se encuentra en el árbol.
+ */
+void avl_eliminar(AVL, void *);
+
+/**
  * Retorna 1 si el arbol cumple la propiedad de los arboles AVL, y 0 en caso
  * contrario.
  */

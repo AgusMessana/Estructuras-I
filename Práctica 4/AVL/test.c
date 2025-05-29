@@ -59,7 +59,19 @@ int main() {
   for (int i = 0; i < 6; ++i)
     assert(avl_buscar(arbol2, otrosNumeros + i) == 0);
 
-  avl_destruir(arbol2);
+  // caso de prueba 4:
+  // eliminar todos los nodos del árbol AVL de la práctica,
+  // imprimiendo en preorden cada árbol intermedio
+  for (int i = 0; i < 8; ++i) {
+    avl_eliminar(arbol2, numeros + i);
+    printf("Se elimino %d. Recorrido preorden: ", numeros[i]);
+    avl_recorrer(arbol2, AVL_RECORRIDO_PRE, imprimir_puntero_entero, NULL);
+    assert(avl_buscar(arbol2, numeros + i) == 0);
+    assert(avl_validar(arbol2) == 1);
+    puts("");
+  }
+
+    avl_destruir(arbol2);
 
   puts("Ok");
 

@@ -1,3 +1,4 @@
+// gcc avl.c test.c -Wall -Werror -Wextra -o test
 #include "avl.h"
 #include <assert.h>
 #include <stdio.h>
@@ -74,12 +75,14 @@ static int avl_nodo_buscar(AVL_Nodo* raiz, FuncionComparadora comp,
   void* dato) {
   if (raiz == NULL)
     return 0;
-  else if (comp(dato, raiz->dato) == 0) // raiz->dato == dato
-    return 1;
-  else if (comp(dato, raiz->dato) < 0) // dato < raiz->dato
+
+  int c = comp(dato, raiz->dato);
+  if (c < 0) // dato < raiz->dato
     return avl_nodo_buscar(raiz->izq, comp, dato);
-  else // raiz->dato < dato
+  else if (c > 0) // dato > raiz->dato
     return avl_nodo_buscar(raiz->der, comp, dato);
+  else // dato == raiz->dato
+    return 1;
 }
 int avl_buscar(AVL arbol, void* dato) {
   return avl_nodo_buscar(arbol->raiz, arbol->comp, dato);
@@ -111,7 +114,7 @@ static unsigned int avl_nodo_max_altura_hijos(AVL_Nodo* raiz) {
 static int avl_nodo_factor_balance(AVL_Nodo* raiz) {
   assert(raiz != NULL);
   int factor = avl_nodo_altura(raiz->der) - avl_nodo_altura(raiz->izq);
-  assert(-2 <= factor || factor <= 2);
+  assert(-2 <= factor && factor <= 2);
   return factor;
 }
 
@@ -155,35 +158,100 @@ static AVL_Nodo* avl_nodo_crear(void* dato, FuncionCopiadora copia) {
 }
 
 /**
- * avl_insertar: Inserta un dato no repetido en el arbol, manteniendo la
+ * avl_nodo_rebalancear: Reestablece la propiedad de AVL, presuponiendo que:
+ *  - el factor de balance esta entre -2 y +2
+ *  - los dos hijos cumplen la propiedad de AVL
+ */
+static AVL_Nodo* avl_nodo_rebalancear(AVL_Nodo* raiz) {
+
+  if (avl_nodo_factor_balance(raiz) == -2) { // desbalanceado a izquierda
+
+    if (avl_nodo_factor_balance(raiz->izq) == 1) // desbalanceado LR
+      raiz->izq = avl_nodo_rotacion_simple_izq(raiz->izq);
+
+    raiz = avl_nodo_rotacion_simple_der(raiz);
+
+  } else if (avl_nodo_factor_balance(raiz) == 2) { // desbalanceado a derecha
+    /** COMPLETAR */
+    assert(0);
+  }
+
+  return raiz;
+}
+
+/**
+ * avl_nodo_insertar: Inserta un dato no repetido en el arbol, manteniendo la
  * propiedad de los arboles AVL.
  */
 static AVL_Nodo* avl_nodo_insertar(AVL_Nodo* raiz, void* dato,
   FuncionCopiadora copia, FuncionComparadora comp) {
+
   if (raiz == NULL) // insertamos el nuevo elemento
     return avl_nodo_crear(dato, copia);
-  else if (comp(dato, raiz->dato) < 0) { // el dato debe ir en el subarbol izq
+
+  int c = comp(dato, raiz->dato);
+  if (c < 0) // el dato debe ir en el subarbol izq
     raiz->izq = avl_nodo_insertar(raiz->izq, dato, copia, comp);
-    // chequear balance
-    if (avl_nodo_factor_balance(raiz) == -2) {
-      // casos 1 o 2
-      if (avl_nodo_factor_balance(raiz->izq) == 1) // caso 2
-        raiz->izq = avl_nodo_rotacion_simple_izq(raiz->izq);
-      raiz = avl_nodo_rotacion_simple_der(raiz); // caso 1
-    }
-    raiz->altura = 1 + avl_nodo_max_altura_hijos(raiz);
-    return raiz;
-  }
-  else if (comp(raiz->dato, dato) < 0) { // el dato debe ir en el subarbol der
-    /** COMPLETAR */
-    assert(0);
-    return raiz;
-  }
+  else if (c > 0) // el dato debe ir en el subarbol der
+    raiz->der = avl_nodo_insertar(raiz->der, dato, copia, comp);
   else // no agregar elementos repetidos
     return raiz;
+
+  raiz->altura = 1 + avl_nodo_max_altura_hijos(raiz);
+
+  return avl_nodo_rebalancear(raiz);
 }
 void avl_insertar(AVL arbol, void* dato) {
   arbol->raiz = avl_nodo_insertar(arbol->raiz, dato, arbol->copia, arbol->comp);
+}
+
+/**
+ * avl_nodo_menor: Devuelve el nodo con el menor dato del árbol.
+ */
+static AVL_Nodo *avl_nodo_menor(AVL_Nodo *raiz) {
+  /* COMPLETAR */
+  (void) raiz; // para silenciar error de parmámetro sin usar.
+  assert(0);
+}
+
+/**
+ * avl_nodo_eliminar: Elimina el dato del árbol, manteniendo la propiedad de los
+ * arboles AVL. No hace nada si el dato no se encuentra en el árbol.
+ */
+static AVL_Nodo* avl_nodo_eliminar(AVL_Nodo* raiz, void* dato,
+  FuncionDestructora destr, FuncionComparadora comp) {
+
+  if (raiz == NULL) // el dato no se encuentra en el árbol
+    return NULL;
+
+  int c = comp(dato, raiz->dato);
+  if (c < 0) // el dato puede estar en el subárbol izq
+    raiz->izq = avl_nodo_eliminar(raiz->izq, dato, destr, comp);
+  else if (c > 0) // el dato puede estar en el subárbol der
+    raiz->der = avl_nodo_eliminar(raiz->der, dato, destr, comp);
+  else { // el dato está en el nodo actual
+    if (raiz->izq == NULL || raiz->der == NULL) { // el nodo a eliminar es una hoja o
+                                                  // tiene exactamente un hijo
+      AVL_Nodo *sucesor = raiz->izq == NULL ? raiz->der : raiz->izq;
+      destr(raiz->dato);
+      free(raiz);
+      return sucesor; // no es necesario rebalancear en este caso
+    } else { // el nodo a eliminar tiene dos hijos.
+      AVL_Nodo *menor = avl_nodo_menor(raiz->der);
+      // reemplazamos el dato del nodo a eliminar con el dato del nodo del sucesor
+      // in-order en el subárbol derecho.
+      /* COMPLETAR */
+      (void) menor; // para silenciar error de variable sin usar.
+      assert(0);
+    }
+  }
+
+  raiz->altura = 1 + avl_nodo_max_altura_hijos(raiz);
+
+  return avl_nodo_rebalancear(raiz);
+}
+void avl_eliminar(AVL arbol, void* dato) {
+  arbol->raiz = avl_nodo_eliminar(arbol->raiz, dato, arbol->destr, arbol->comp);
 }
 
 /**
@@ -234,7 +302,7 @@ int avl_validar(AVL arbol) {
 }
 
 /**
- * avl_recorrer: Recorrido DSF del arbol
+ * avl_recorrer: Recorrido DFS del arbol
  */
 static void avl_nodo_recorrer(AVL_Nodo* raiz, AVLRecorrido orden,
   FuncionVisitanteExtra visita, void* extra) {
