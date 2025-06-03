@@ -82,9 +82,8 @@ void bheap_recorrer(BHeap heap, FuncionVisitante visit) {
  * Agrega un elemento al heap, realocando el arreglo en caso de ser necesario.
  * El resultado debe ser nuevamente un heap binario.
  */
-BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy,
-                     FuncionComparadora comp) {
-  if (heap == NULL || dato == NULL || copy == NULL || comp == NULL) {
+BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy) {
+  if (heap == NULL || dato == NULL || copy == NULL) {
     return heap;
   }
 
@@ -102,7 +101,7 @@ BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy,
   heap->arr[heap->ultimo] = copy(dato);
 
   int i = heap->ultimo;
-  while (i > 1 && comp(heap->arr[i], heap->arr[i / 2]) > 0) {
+  while (i > 1 && heap->comp(heap->arr[i], heap->arr[i / 2]) > 0) {
     void *temp = heap->arr[i / 2];
     heap->arr[i / 2] = heap->arr[i];
     heap->arr[i] = temp;
@@ -116,7 +115,43 @@ BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy,
  * Elimina un elemento del heap. El resultado debe ser nuevamente un heap
  * binario.
  */
-BHeap bheap_eliminar(BHeap heap, void *dato, FuncionComparadora comp,
-                     FuncionDestructora dest) {
+BHeap bheap_eliminar(BHeap heap, void *dato, FuncionDestructora dest) {
+  if (heap == NULL || dato == NULL || dest == NULL) {
+    return heap;
+  }
+  int encontrado = 0;
+  for (int i = 1; i <= heap->ultimo && encontrado == 0; i++) {
+    if (comp(dato, heap->arr[i]) == 0) {
+      void *temp = heap->arr[i];
+      heap->arr[i] = heap->arr[heap->ultimo];
+      heap->arr[heap->ultimo] = temp;
+      dest(heap->arr[heap->ultimo]);
+      heap->ultimo--;
 
+      int limite = heap->ultimo / 2;
+      while (i <= limite) {
+        int hijo_izq = 2 * i;
+        int hijo_der = 2 * i + 1;
+        int hijo_mayor = hijo_izq;
+
+        if (hijo_der <= heap->ultimo
+            && heap->comp(heap->arr[hijo_der], heap->arr[hijo_izq]) > 0) {
+          hijo_mayor = hijo_der;
+        }
+
+        if (heap->comp(heap->arr[hijo_mayor], heap->arr[i]) > 0) {
+          void *temp = heap->arr[i];
+          heap->arr[i] = heap->arr[hijo_mayor];
+          heap->arr[hijo_mayor] = temp;
+          i = hijo_mayor;
+        } else {
+          break;
+        }
+      }
+
+      encontrado = 1;
+    }
+  }
+
+  return heap;
 }

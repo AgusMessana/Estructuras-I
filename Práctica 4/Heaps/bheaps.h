@@ -33,14 +33,12 @@ void bheap_recorrer(BHeap heap, FuncionVisitante visit);
  * Agrega un elemento al heap, realocando el arreglo en caso de ser necesario.
  * El resultado debe ser nuevamente un heap binario.
  */
-BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy,
-                     FuncionComparadora comp);
+BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy);
 
 /**
  * Elimina un elemento del heap. El resultado debe ser nuevamente un heap
  * binario.
  */
-BHeap bheap_eliminar(BHeap heap, void *dato, FuncionComparadora comp,
-                     FuncionDestructora dest);
+BHeap bheap_eliminar(BHeap heap, void *dato, FuncionDestructora dest);
 
 #endif
