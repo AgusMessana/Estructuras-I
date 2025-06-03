@@ -136,6 +136,7 @@ BHeap bheap_eliminar(BHeap heap, void *dato, FuncionDestructora dest) {
 
         if (hijo_der <= heap->ultimo
             && heap->comp(heap->arr[hijo_der], heap->arr[hijo_izq]) > 0) {
+          // Chequea que exista hijo derecho. Si existe, lo compara con el izquierdo.
           hijo_mayor = hijo_der;
         }
 
