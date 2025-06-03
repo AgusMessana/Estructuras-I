@@ -6,7 +6,16 @@ typedef int (*FuncionComparadora)(void *, void *);
 typedef void (*FuncionDestructora)(void *dato);
 typedef void (*FuncionVisitante)(void *dato);
 
-typedef struct _BHeap *BHeap;
+/**
+ * Guarda un arreglo dinámico y su capacidad, el último índice ocupado del
+ * arreglo, y un puntero a una función de comparación.
+ */
+typedef struct _BHeap {
+  void **arr;
+  int capacidad;
+  int ultimo;
+  FuncionComparadora comp;
+} *BHeap;
 
 /**
  * Crea un heap vacío con una capacidad y una función de comparación dadas.
@@ -41,4 +50,10 @@ BHeap bheap_insertar(BHeap heap, void *dato, FuncionCopiadora copy);
  */
 BHeap bheap_eliminar(BHeap heap, void *dato, FuncionDestructora dest);
 
+/**
+ * Crea un heap binario a partir de un arreglo arbitrario sin usar la función
+ * para insertar valores nuevos.
+ */
+BHeap bheap_crear_desde_arr(void **arr, int largo, FuncionCopiadora copiar,
+                            FuncionComparadora comp);
 #endif

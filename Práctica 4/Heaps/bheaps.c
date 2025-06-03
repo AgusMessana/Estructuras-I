@@ -4,17 +4,6 @@
 #include <stdlib.h>
 
 /**
- * Guarda un arreglo dinámico y su capacidad, el último índice ocupado del
- * arreglo, y un puntero a una función de comparación.
- */
-typedef struct _BHeap {
-  void **arr;
-  int capacidad;
-  int ultimo;
-  FuncionComparadora comp;
-};
-
-/**
  * Crea un heap vacío con una capacidad y una función de comparación dadas.
  */
 BHeap bheap_crear(int cap, FuncionComparadora comp) {
@@ -121,7 +110,7 @@ BHeap bheap_eliminar(BHeap heap, void *dato, FuncionDestructora dest) {
   }
   int encontrado = 0;
   for (int i = 1; i <= heap->ultimo && encontrado == 0; i++) {
-    if (comp(dato, heap->arr[i]) == 0) {
+    if (heap->comp(dato, heap->arr[i]) == 0) {
       void *temp = heap->arr[i];
       heap->arr[i] = heap->arr[heap->ultimo];
       heap->arr[heap->ultimo] = temp;
@@ -151,6 +140,59 @@ BHeap bheap_eliminar(BHeap heap, void *dato, FuncionDestructora dest) {
       }
 
       encontrado = 1;
+    }
+  }
+
+  return heap;
+}
+
+/**
+ * Crea un heap binario a partir de un arreglo arbitrario sin usar la función
+ * para insertar valores nuevos.
+ */
+BHeap bheap_crear_desde_arr(void **arr, int largo, FuncionCopiadora copiar,
+                            FuncionComparadora comp) {
+  if (arr == NULL || largo <= 0 || comp == NULL || copiar == NULL) {
+    return NULL;
+  }
+  BHeap heap = bheap_crear(largo, comp);
+  if (heap == NULL) {
+    return NULL;
+  }
+  for (int i = 0; i < largo; i++) {
+    heap->arr[i + 1] = copiar(arr[i]);
+    if (heap->arr[i + 1] == NULL) {
+      // Liberar lo copiado hasta ahora
+      for (int j = 1; j <= i; j++) {
+        free(heap->arr[j]);
+      }
+      free(heap->arr);
+      free(heap);
+      return NULL;
+    }
+  }
+  heap->ultimo = largo;
+
+  for (int i = largo / 2; i >= 1; i--) {
+    int j = i;
+    while (j <= heap->ultimo / 2) {
+      int hijo_izq = 2 * j;
+      int hijo_der = 2 * j + 1;
+      int hijo_max = hijo_izq;
+
+      if (hijo_der <= heap->ultimo
+          && heap->comp(heap->arr[hijo_der], heap->arr[hijo_izq]) > 0) {
+        hijo_max = hijo_der;
+      }
+
+      if (heap->comp(heap->arr[hijo_max], heap->arr[j]) > 0) {
+        void *temp = heap->arr[j];
+        heap->arr[j] = heap->arr[hijo_max];
+        heap->arr[hijo_max] = temp;
+        j = hijo_max;
+      } else {
+        break;
+      }
     }
   }
 
