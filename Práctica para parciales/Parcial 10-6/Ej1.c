@@ -59,7 +59,7 @@ void heapify(BHeap heap, int n, int i, FuncionComparadora comp) {
 
 void construir_heap(BHeap heap, FuncionComparadora comp) {
   int n = heap->ultimo;
-  for (int i = n / 2; i >= 1; i++) {
+  for (int i = n / 2; i >= 1; i--) {
     heapify(heap, n, i, comp);
   }
 }

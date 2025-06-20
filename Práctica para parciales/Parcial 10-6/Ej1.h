@@ -25,6 +25,6 @@ typedef struct _BHeap {
  * construya un heap con los datos presentes en el árbol. El heap resultante NO
  * debe tener copias físicas de los datos.
  */
-BHeap bst_to_heap (BSTree arbol, FuncionComparadora comp);
+BHeap bst_to_heap(BSTree arbol, FuncionComparadora comp);
 
 #endif

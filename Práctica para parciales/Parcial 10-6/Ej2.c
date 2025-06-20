@@ -8,7 +8,7 @@ void *no_copia(void *dato) {
 
 AVL crear_nodo(void *dato) {
   AVL arbol = malloc(sizeof(struct _AVL_Nodo));
-  arbol->dato = dato;
+  arbol->dato = no_copia(dato);
   arbol->izq = NULL;
   arbol->der = NULL;
   arbol->altura = 1;
@@ -25,12 +25,12 @@ int altura(AVL arbol) {
 
 int actualizar_altura(AVL arbol) {
   if (arbol == NULL) {
-    return -1;
+    return;
   }
   int alt_izq = altura(arbol->izq);
   int alt_der = altura(arbol->der);
 
-  return 1 + (alt_izq > alt_der ? alt_izq : alt_der);
+  arbol->altura = 1 + (alt_izq > alt_der ? alt_izq : alt_der);
 }
 
 AVL principal_aux(void **arr, int inicio, int fin) {
