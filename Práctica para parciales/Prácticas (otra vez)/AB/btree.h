@@ -74,5 +74,10 @@ int btree_profundidad(BTree arbol, int dato);
  */
 int btree_sumar(BTree arbol);
 
+/**
+ * Dado un árbol binario, genere el árbol binario espejo donde el hijo derecho
+ * de cada nodo pasa a ser izquierdo y el izquierdo pasa a ser derecho.
+ */
+BTree mirror(BTree arbol);
 
 #endif /* __BTREE_H__ */

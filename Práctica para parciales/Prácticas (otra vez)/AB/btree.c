@@ -207,4 +207,18 @@ int btree_sumar(BTree arbol) {
   return arbol->dato + btree_sumar(arbol->left) + btree_sumar(arbol->right);
 }
 
+/**
+ * Dado un árbol binario, genere el árbol binario espejo donde el hijo derecho
+ * de cada nodo pasa a ser izquierdo y el izquierdo pasa a ser derecho.
+ */
+BTree mirror(BTree arbol) {
+  if (btree_empty(arbol)) {
+    return NULL;
+  }
+  BTree nuevoArbol = malloc(sizeof(struct _BTNodo));
+  nuevoArbol->dato = arbol->dato;
+  nuevoArbol->left = mirror(arbol->right);
+  nuevoArbol->right = mirror(arbol->left);
 
+  return nuevoArbol;
+}
