@@ -1,5 +1,0 @@
-Caso:      Forma del desequilibrio:   Rotación necesaria:
-LL         Izquierda-Izquierda        Rotación derecha
-RR         Derecha-Derecha            Rotación izquierda
-LR         Izquierda-Derecha          Rotación doble derecha (izq + der)
-RL         Derecha-Izquierda          Rotación doble izquierda (der + izq)
