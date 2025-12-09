@@ -13,10 +13,11 @@
 int main() {
 
   // Iniciar tabla hash
-  TablaHash tabla = tablahash_crear(
-      CAPACIDAD_INICIAL, (FuncionCopiadora)contacto_copia,
-      (FuncionComparadora)contacto_comparar,
-      (FuncionDestructora)contacto_destruir, (FuncionHash)contacto_heashear);
+  TablaHash tabla =
+      tablahash_crear(CAPACIDAD_INICIAL, (FuncionCopiadora) contacto_copia,
+                      (FuncionComparadora) contacto_comparar,
+                      (FuncionDestructora) contacto_destruir,
+                      (FuncionHash) contacto_heashear);
 
   // Contactos
   Contacto *agenda[6];
@@ -30,16 +31,22 @@ int main() {
   // Insertar
   printf("Insercion:\n");
   for (int i = 0; i < 6; ++i) {
+    unsigned idx = contacto_heashear(agenda[i]) % tablahash_capacidad(tabla);
     printf("Insertando el contacto: ");
     contacto_imprimir(agenda[i]);
-    printf(" en la casilla %d.\n",
-           contacto_heashear(agenda[i]) % tablahash_capacidad(tabla));
-    int nElems = tablahash_nelems(tabla);
+    printf(" en la casilla %u.\n", idx);
+
+    int nElemsAntes = tablahash_nelems(tabla);
     tablahash_insertar(tabla, agenda[i]);
-    if (tablahash_nelems(tabla) == nElems)
-      printf("\tInsercion fallida: Colision.\n");
-    else
-      printf("\tInsercion exitosa.\n");
+    int nElemsDespues = tablahash_nelems(tabla);
+
+    if (nElemsDespues == nElemsAntes) {
+      printf
+          ("\tContacto ya existente: se actualizo la informacion (sobrescritura).\n");
+    } else {
+      printf
+          ("\tContacto insertado correctamente (puede haber colisiones resueltas por encadenamiento).\n");
+    }
   }
 
   // Buscar
@@ -64,8 +71,8 @@ int main() {
     tablahash_eliminar(tabla, agenda[i]);
   }
 
-  // Buscar
-  printf("\nBusqueda:\n");
+  // Buscar nuevamente
+  printf("\nBusqueda luego de eliminar algunos contactos:\n");
   for (int i = 0; i < 6; ++i) {
     printf("Buscando el contacto: ");
     contacto_imprimir(agenda[i]);
@@ -85,10 +92,10 @@ int main() {
   contacto_imprimir(nuevoContacto);
   puts("");
   tablahash_insertar(tabla, nuevoContacto);
+
   // Chequeamos que se haya sobrescrito
-  Contacto *ret = tablahash_buscar(
-      tabla, agenda[0]); // Es equivalente a buscar nuevoContacto porque se
-                         // compara por nombre
+  Contacto *ret = tablahash_buscar(tabla, agenda[0]);   // Es equivalente a buscar nuevoContacto porque se
+  // compara por nombre
   printf("El nuevo contacto es: ");
   contacto_imprimir(ret);
   puts("");
