@@ -1,0 +1,44 @@
+Tabla Hash con capacidad para 11 elementos inicialmente vacía.
+Función de hash: f(x) = x mod 11.
+Usar linear probing para colisiones
+Secuencia de números: 10; 20; 15; 25; 30; 3; 18; 19.
+
+1. Insertar 10
+  f(10) = 10 mod 11 = 10
+  Posición 10: vacía
+  Pongo 10 en la posición 10
+2. Insertar 20
+  f(20) = 20 mod 11 = 9
+  Posición 9: vacía
+  Pongo 20 en la posición 9
+3. Insertar 15
+  f(15) = 15 mod 11 = 4
+  Posición 4: vacía
+  Pongo 15 en la posición 4
+4. Insertar 25
+  f(25) = 25 mod 11 = 3
+  Posición 3: vacía
+  Pongo 25 en la posición 3
+5. Insertar 30
+  f(30) = 30 mod 11 = 8
+  Posición 8: vacía
+  Pongo 30 en la posición 8
+6. Insertar 3
+  f(3) = 3 mod 11 = 3
+  Posición 3: usada
+  Posición 4: usada
+  Posición 5: vacía
+  Pongo 3 en la posición 5
+7. Insertar 18
+  f(18) = 18 mod 11 = 7
+  Posición 7: vacía
+  Pongo 18 en la posición 7
+8. Insertar 19
+  f(19) = 19 mod 11 = 8
+  Posición 8: usada
+  Posición 9: usada
+  Posición 10: usada
+  Posición 0: vacía
+  Pongo 19 en la posición 0
+9. Resultado final
+  [19, -, -, 25, 15, 3, -, 18, 30, 20, 10]
