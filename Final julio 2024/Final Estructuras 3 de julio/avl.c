@@ -182,7 +182,7 @@ static AVL_Nodo *avl_nodo_rebalancear(AVL_Nodo * raiz) {
 
     raiz = avl_nodo_rotacion_simple_izq(raiz);
   }
-
+  raiz->altura = 1 + avl_nodo_max_altura_hijos(raiz);
   return raiz;
 }
 

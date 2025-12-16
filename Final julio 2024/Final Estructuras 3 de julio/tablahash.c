@@ -8,6 +8,7 @@
  */
 typedef struct {
   AVL arbol;
+  unsigned cant;
 } CasillaHash;
 
 /**
@@ -89,6 +90,7 @@ static void visitante_rehash(void *dato, void *extra) {
   struct _ctx_rehash *ctx = extra;
   unsigned idx = ctx->hash(dato) % ctx->nuevaCap;
   avl_insertar(ctx->nuevoElems[idx].arbol, dato);
+  ctx->nuevoElems[idx].cant++;
 }
 
 void tablahash_redimensionar(TablaHash tabla) {
@@ -98,6 +100,7 @@ void tablahash_redimensionar(TablaHash tabla) {
   for (unsigned i = 0; i < nuevaCap; ++i) {
     nuevoElems[i].arbol = avl_crear(tabla->copia, tabla->comp, tabla->destr);
     assert(nuevoElems[i].arbol != NULL);
+    nuevoElems[i].cant = 0;
   }
 
   struct _ctx_rehash ctx;
@@ -119,49 +122,35 @@ void tablahash_redimensionar(TablaHash tabla) {
 
 /**
  * Inserta un dato en la tabla, o lo reemplaza si ya se encontraba.
- * IMPORTANTE: La implementacion no maneja colisiones.
  */
 void tablahash_insertar(TablaHash tabla, void *dato) {
 
   // Calculamos la posicion del dato dado, de acuerdo a la funcion hash.
   unsigned idx = tabla->hash(dato) % tabla->capacidad;
+  AVL bucket = tabla->elems[idx].arbol;
+  int existe = avl_buscar(bucket, dato);
 
-  // Insertar el dato si la casilla estaba libre.
-  if (tabla->elems[idx].dato == NULL) {
+  if (existe == 0) {
+    avl_insertar(bucket, dato);
+    tabla->elems[idx].cant++;
     tabla->numElems++;
-    tabla->elems[idx].dato = tabla->copia(dato);
-    return;
+  } else {
+    avl_eliminar(bucket, dato);
+    avl_insertar(bucket, dato);
   }
-  // Sobrescribir el dato si el mismo ya se encontraba en la tabla.
-  else if (tabla->comp(tabla->elems[idx].dato, dato) == 0) {
-    tabla->destr(tabla->elems[idx].dato);
-    tabla->elems[idx].dato = tabla->copia(dato);
-    return;
+
+  if (tabla->numElems > 0) {
+    unsigned maxCant = 0;
+    for (unsigned i = 0; i < tabla->capacidad; ++i) {
+      if (tabla->elems[i].cant > maxCant) {
+        maxCant = tabla->elems[i].cant;
+      }
+    }
+
+    if (maxCant * 100 > 15 * tabla->numElems) {
+      tablahash_redimensionar(tabla);
+    }
   }
-  // No hacer nada si hay colision.
-  else {
-    return;
-  }
-}
-
-/**
- * Retorna el dato de la tabla que coincida con el dato dado, o NULL si el dato
- * buscado no se encuentra en la tabla.
- */
-void *tablahash_buscar(TablaHash tabla, void *dato) {
-
-  // Calculamos la posicion del dato dado, de acuerdo a la funcion hash.
-  unsigned idx = tabla->hash(dato) % tabla->capacidad;
-
-  // Retornar NULL si la casilla estaba vacia.
-  if (tabla->elems[idx].dato == NULL)
-    return NULL;
-  // Retornar el dato de la casilla si hay concidencia.
-  else if (tabla->comp(tabla->elems[idx].dato, dato) == 0)
-    return tabla->elems[idx].dato;
-  // Retornar NULL en otro caso.
-  else
-    return NULL;
 }
 
 /**
@@ -171,15 +160,13 @@ void tablahash_eliminar(TablaHash tabla, void *dato) {
 
   // Calculamos la posicion del dato dado, de acuerdo a la funcion hash.
   unsigned idx = tabla->hash(dato) % tabla->capacidad;
-
-  // Retornar si la casilla estaba vacia.
-  if (tabla->elems[idx].dato == NULL)
+  AVL bucket = tabla->elems[idx].arbol;
+  int existe = avl_buscar(bucket, dato);
+  if(existe == 0) {
     return;
-  // Vaciar la casilla si hay coincidencia.
-  else if (tabla->comp(tabla->elems[idx].dato, dato) == 0) {
+  } else {
+    avl_eliminar(bucket, dato);
+    tabla->elems[idx].cant--;
     tabla->numElems--;
-    tabla->destr(tabla->elems[idx].dato);
-    tabla->elems[idx].dato = NULL;
-    return;
   }
 }
