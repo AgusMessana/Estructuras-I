@@ -164,12 +164,12 @@ void hybrid_hash_eliminar(HybridHash tabla, void *dato) {
         tabla->numElems--;
         tabla->elems[idx].lista = glist_crear();
 
-        ExtraAVLaLista e = {.plista = &tabla->elems[idx].lista,.copy =
-              tabla->copia
-        };
+        ExtraAVLaLista e;
+        e.plista = &tabla->elems[idx].lista;
+        e.copy = tabla->copia;
 
-        avl_recorrer(tabla->elems[idx].arbol,
-                     AVL_RECORRIDO_IN, AVL_a_glist, &e);
+        avl_recorrer(tabla->elems[idx].arbol, AVL_RECORRIDO_IN, AVL_a_glist,
+                     &e);
 
         // destruir AVL (nodos + datos originales)
         avl_destruir(tabla->elems[idx].arbol);
