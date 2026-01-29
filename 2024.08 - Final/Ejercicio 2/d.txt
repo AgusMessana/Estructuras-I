@@ -1,0 +1,9 @@
+Si la tabla tenía los elementos así:
+0, 1 , 2, 3 , 4, 5 , 6, 7 , 8 (posiciones) 
+9, 18, -, 12, 3, 14, 4, 21, - (valores)
+Donde - significa VACÍO.
+
+Al eliminar el 3, nos quedaría
+0, 1 , 2, 3 , 4, 5 , 6, 7 , 8 (posiciones)
+9, 18, -, 12, |, 14, 4, 21, - (valores)
+Donde - significa VACÍO y | significa ELIMINADO

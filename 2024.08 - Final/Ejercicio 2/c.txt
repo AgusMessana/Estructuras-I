@@ -1,0 +1,1 @@
+Si se elimina el 3 marcando su casilla como vacía, se interrumpe la secuencia de sondeo y búsquedas posteriores pueden fallar. La solución es usar un estado ELIMINADO, que permite continuar la búsqueda sin modificar el algoritmo.
