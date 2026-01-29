@@ -11,7 +11,9 @@ struct _BTNodo {
 /**
  * Devuelve un arbol vacío.
  */
-BTree btree_crear() { return NULL; }
+BTree btree_crear() {
+  return NULL;
+}
 
 /**
  * Destruccion del árbol.
@@ -27,7 +29,9 @@ void btree_destruir(BTree nodo) {
 /**
  * Indica si el árbol es vacío.
  */
-int btree_empty(BTree nodo) { return nodo == NULL; }
+int btree_empty(BTree nodo) {
+  return nodo == NULL;
+}
 
 /**
  * Crea un nuevo arbol, con el dato dado en el nodo raiz, y los subarboles dados
@@ -47,7 +51,31 @@ BTree btree_unir(int dato, BTree left, BTree right) {
  */
 void btree_recorrer(BTree arbol, BTreeOrdenDeRecorrido orden,
                     FuncionVisitante visit) {
-  /** COMPLETAR */
-  assert(0);
-  return;
+  assert(visit != NULL);
+
+  if (arbol == NULL)
+    return;
+
+  switch (orden) {
+  case BTREE_RECORRIDO_PRE:
+    visit(arbol->dato);
+    btree_recorrer(arbol->left, orden, visit);
+    btree_recorrer(arbol->right, orden, visit);
+    break;
+
+  case BTREE_RECORRIDO_IN:
+    btree_recorrer(arbol->left, orden, visit);
+    visit(arbol->dato);
+    btree_recorrer(arbol->right, orden, visit);
+    break;
+
+  case BTREE_RECORRIDO_POST:
+    btree_recorrer(arbol->left, orden, visit);
+    btree_recorrer(arbol->right, orden, visit);
+    visit(arbol->dato);
+    break;
+
+  default:
+    assert(0);                  // orden inválido
+  }
 }
