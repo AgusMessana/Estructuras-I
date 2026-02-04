@@ -1,0 +1,21 @@
+Si la tabla tenía los elementos así:
+0  1 2  3 4  5 6  7 8   Posiciones
+9 18 | 12 3 14 4 21 |   Valores
+Donde | significa VACÍO.
+
+Al eliminar el 3, nos quedaría
+0  1 2  3 4  5 6  7 8   Posiciones
+9 18 | 12 - 14 4 21 |   Valores
+Donde | significa VACÍO y - significa ELIMINADO
+
+Es claro que habría que plantear una casilla donde no sólo haya un entero sino también un estado.
+Podría ser de la forma:
+typedef struct {
+  int valor;
+  EstadoCasilla estado;
+} Casilla;
+ACLARACIÓN: EstadoCasilla se definió en el inciso c.
+
+La casilla en posición 4, que era del 3, quedaría con estado == ELIMINADO
+La casilla en posición 2, que no tiene valor asignado, tiene estado == VACIO
+La casilla en posición 0, que es del 9, tiene estado == OCUPADO

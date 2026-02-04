@@ -1,0 +1,51 @@
+Tabla
+0  1 2  3 4  5 6  7 8   Posiciones
+9 18 | 12 3 14 4 21 |   Valores
+Función hash: h(x) = x mod 9
+
+1) 9, 14, 4, 18, 12, 3, 21
+* h(9) = 9 mod 9 = 0 -> 9 en posición 0
+* h(14) = 14 mod 9 = 5 -> 14 en posición 5
+* h(4) = 4 mod 9 = 4 -> 4 en posición 4 (ERROR: ESTÁ EN POSICIÓN 6)
+Este orden no es correcto.
+
+2) 12, 3, 14, 18, 4, 9, 21
+* h(12) = 12 mod 9 = 3 -> 12 en posición 3
+* h(3) = 3 mod 9 = 3 -> 3 en posición 3 (OCUPADA) -> 3 en posición 4
+* h(14) = 14 mod 9 = 5 -> 14 en posición 5
+* h(18) = 18 mod 9 = 0 -> 18 en posición 0 (ERROR: ESTÁ EN POSICIÓN 1)
+Este orden no es correcto.
+
+3) 12, 14, 3, 9, 4, 18, 21
+* h(12) = 12 mod 9 = 3 -> 12 en posición 3
+* h(14) = 14 mod 9 = 5 -> 14 en posición 5
+* h(3) = 9 mod 3 = 3 -> 3 en posición 3 (OCUPADA) -> 3 en posición 4
+* h(9) = 9 mod 9 = 0 -> 9 en posición 0
+* h(4) = 9 mod 4  = 0 -> 4 en posición 4 (OCUPADA) -> 4 en posición 5 (OCPUADA) -> 4 en posición 6
+* h(18) = 18 mod 9 = 0 -> 18 en posición 0 (OCUPADA) -> 18 en posición 1
+* h(21) = 21 mod 9 = 3 -> 21 en posición 3 (OCUPADA) -> 21 en posición 4 (OCUPADA) -> 
+21 en posición 5 (OCUPADA) -> 21 en posición 6 (OCUPADA) -> 21 en posición 7
+Este orden es correcto
+
+4) 9, 12, 14, 3, 4, 21, 18
+* h(9) = 9 mod 9 = 0 -> 9 en posición 0
+* h(12) = 12 mod 9 = 3 -> 12 en posición 3
+* h(14) = 14 mod 9 = 5 -> 14 en posición 5
+* h(3) = 3 mod 9 = 3 -> 3 en posición 3 (OCUPADA) -> 3 en posición 4
+* h(4) = 4 mod 9 = 4 -> 4 en posición 4 (OCUPADA) -> 4 en posición 5 (OCUPADA) -> 4 en posición 6
+* h(21) = 21 mod 9 = 3 -> 21 en posición 3 (OCUPADA) -> 21 en posición 4 (OCUPADA) -> 
+21 en posición 5 (OCUPADA) -> 21 en posición 6 (OCUPADA) -> 21 en posición 7
+* h(18) = 18 mod 9 = 0 -> 18 en posición 0 (OCUPADA) -> 18 en posición 1
+Este orden es correcto
+
+5) 12, 9, 18, 3, 14, 21, 4
+* h(12) = 12 mod 9 = 3 -> 12 en posición 3
+* h(9) = 9 mod 9 = 0 -> 9 en posición 0
+* h(18) = 18 mod 9 = 0 -> 18 en posición 0 (OCUPADA) -> 18 en posición 1
+* h(3) = 3 mod 9 = 3 -> 3 en posición 3 (OCUPADA) -> 3 en posición 4
+* h(14) = 14 mod 9 = 5 -> 14 en posición 5
+* h(21) = 21 mod 9 = 3 -> 21 en posición 3 (OCUPADA) -> 21 en posición 4 (OCUPADA) -> 
+21 en posición 5 (OCUPADA) -> 21 en posición 6 (ERROR: ESTÁ EN POSICIÓN 7)
+Este orden no es correcto
+
+Luego, los órdenes posibles de incersión a la tabla son el 3) y el 4).

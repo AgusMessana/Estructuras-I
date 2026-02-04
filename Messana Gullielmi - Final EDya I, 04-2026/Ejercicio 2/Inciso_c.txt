@@ -1,0 +1,15 @@
+* Si se elimina el 3 marcando su casilla como vacía, se interrumpe la secuencia de sondeo y búsquedas 
+posteriores pueden fallar.
+* Es decir, sabemos que el valor 3 está en la posición 4. Al querer insertar el valor 4, (4 mod 9 = 4), como 
+esa posición está ocupada, pasaría a ocupar la posición 5. 
+* Según nuestro algoritmo en el inciso b, el mismo no se detiene hasta volver a donde empezó o hasta encontrar 
+una casilla vacía. Si eliminamos el 3 y la marcamos como vacía, al llegar a esa posición el algoritmo 
+terminará, incapacitandonos de encontrar el valor 4 que estaba después del valor 3
+* La solución es usar un estado ELIMINADO, que permite continuar la búsqueda sin modificar el 
+algoritmo.
+* Se puede crear una enumeración donde se indique el estado de cada casilla, con la forma:
+typedef enum {
+  VACIO, 
+  OCUPADO, 
+  ELIMINADO
+} EstadoCasilla;
